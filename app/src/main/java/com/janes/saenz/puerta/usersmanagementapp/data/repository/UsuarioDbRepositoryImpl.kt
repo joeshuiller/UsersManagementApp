@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class UsuarioDbRepositoryImpl @Inject constructor(
@@ -18,6 +19,7 @@ class UsuarioDbRepositoryImpl @Inject constructor(
 ) : BaseRepository(), UsuarioDbRepository {
     override suspend fun clearAndInsertPosts(posts: List<UsuarioDtos>) {
         withContext(Dispatchers.IO) {
+            Timber.d("Pantalla abierta: Disparando petición GET de usuarios $posts")
             val entities = posts.map { mapper.fromDomainToEntity(it) }
             remoteData.clearAndInsertPosts(entities)
         }

@@ -33,9 +33,16 @@ class ObtenerUsuariosUseCase @Inject constructor(
                 if (isCacheEmpty) {
                     // Sincronización forzada: La caché está vacía, necesitamos datos.
                     // Usamos .first() para asegurar que la descarga termine antes de seguir.
-                    repository.getUsuarios().first().let { result ->
+                    repository.getUsuarios().first { it !is Resource.Loading }.let { result ->
                         if (result is Resource.Success) {
-                            repositoryDb.clearAndInsertPosts(result.data)
+                            // Asegúrate de que result.data no sea null antes de insertar
+                            result.data.let { datosPuros ->
+                                repositoryDb.clearAndInsertPosts(datosPuros)
+                                Timber.d("Datos guardados en la BD local exitosamente")
+                            }
+                        } else if (result is Resource.Error) {
+                            emit(Resource.Error("Falló la petición: ${result.message}"))
+                            Timber.e("Falló la petición: ${result.message}")
                         }
                     }
                 }
