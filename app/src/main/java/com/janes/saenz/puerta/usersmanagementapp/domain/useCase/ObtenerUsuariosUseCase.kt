@@ -33,8 +33,8 @@ class ObtenerUsuariosUseCase @Inject constructor(
                 if (isCacheEmpty) {
                     // Sincronización forzada: La caché está vacía, necesitamos datos.
                     // Usamos .first() para asegurar que la descarga termine antes de seguir.
-                    repository.getUsuarios().first { it !is Resource.Loading }.let { result ->
-                        if (result is Resource.Success) {
+                        repository.getUsuarios().first { it !is Resource.Loading }.let { result ->
+                            if (result is Resource.Success) {
                             // Asegúrate de que result.data no sea null antes de insertar
                             result.data.let { datosPuros ->
                                 repositoryDb.clearAndInsertPosts(datosPuros)
