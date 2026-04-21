@@ -4,5 +4,6 @@ data class UsuarioDtos(
     val id: Int,
     val nombre: String,
     val email: String,
-    val fechaCreacion: String
+    val fechaCreacion: String,
+    val isSynced: Boolean = true
 )

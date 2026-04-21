@@ -19,7 +19,8 @@ class UsuarioResponseMapper @Inject constructor() {
                 id = entity.id,
                 nombre = entity.nombre,
                 email = entity.email,
-                fechaCreacion = entity.fechaCreacion
+                fechaCreacion = entity.fechaCreacion,
+                isSynced = true
             )
         } ?: emptyList()
     }

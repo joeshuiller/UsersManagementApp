@@ -32,6 +32,13 @@ interface UsuarioDao {
     suspend fun insertPosts(posts: List<UsuarioEntity>)
 
     /**
+     * Inserta un solo usuario y devuelve el ID local (rowId) que Room le acaba de asignar.
+     * Al devolver Long, Room sabe que quieres el ID autogenerado.
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUsuario(usuario: UsuarioEntity): Long
+
+    /**
      * Realiza una búsqueda filtrada reactiva.
      * * Soporta filtrado por ID exacto y/o coincidencia parcial en el título.
      * * Si los parámetros son nulos, se ignoran en la cláusula WHERE.
@@ -65,4 +72,13 @@ interface UsuarioDao {
         val ids = posts.map { it.id }
         deleteOrphans(ids)
     }
+
+    // Obtener solo los que el backend no conoce
+    @Query("SELECT * FROM users_table WHERE isSynced = 0")
+    fun getPendientesDeSincronizar(): Flow<List<UsuarioEntity>>
+
+    @Transaction
+    // Actualizar el registro cuando el backend nos devuelva el ID real
+    @Query("UPDATE users_table SET id = :nuevoIdReal, isSynced = 1 WHERE id = :idLocalTemporal")
+    suspend fun marcarComoSincronizado(idLocalTemporal: Int, nuevoIdReal: Int)
 }

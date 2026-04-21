@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class UsuarioRepositoryImpl @Inject constructor(
     private val remoteData: UsuarioDataSource,
-    private val mapper: UsuarioResponseMapper
+    private val mapper: UsuarioResponseMapper,
 ) : BaseRepository(), UsuarioRepository{
     override fun getUsuarios(): Flow<Resource<List<UsuarioDtos>>> {
         return safeApiCallFlow { remoteData.getUsuarios() }.map { resource ->

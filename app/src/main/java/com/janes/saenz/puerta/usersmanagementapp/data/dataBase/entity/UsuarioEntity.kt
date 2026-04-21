@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "users_table")
 data class UsuarioEntity (
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: Int = 0,
 
     @ColumnInfo(name = "nombre")
     val nombre: String,
@@ -18,4 +18,6 @@ data class UsuarioEntity (
 
     @ColumnInfo(name = "fechaCreacion")
     val fechaCreacion: String,
+
+    val isSynced: Boolean = true
 )

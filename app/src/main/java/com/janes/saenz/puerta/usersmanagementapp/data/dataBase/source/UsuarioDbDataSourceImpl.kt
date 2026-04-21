@@ -26,4 +26,19 @@ class UsuarioDbDataSourceImpl @Inject constructor(
     override fun getPostById(id: Int): Flow<UsuarioEntity> {
         return apiService.getPostById(id)
     }
+
+    override fun getPendientesDeSincronizar(): Flow<List<UsuarioEntity>> {
+        return apiService.getPendientesDeSincronizar()
+    }
+
+    override suspend fun marcarComoSincronizado(
+        idLocalTemporal: Int,
+        nuevoIdReal: Int
+    ) {
+        return apiService.marcarComoSincronizado(idLocalTemporal, nuevoIdReal)
+    }
+
+    override suspend fun crearUsuario(posts: UsuarioEntity): Long{
+        return apiService.insertUsuario(posts)
+    }
 }
